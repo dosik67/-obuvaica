@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<style>
+  *, *::before, *::after { 
+    box-sizing: border-box; 
+  }
+  body {
+    background-color: #0e0e0e;
+    color: #e0e0e0;
+    font-family: "Roboto", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .header {
+    color: #f5a623;
+    text-align: center;
+    padding: 20px;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    background-color: #1c1c1c;
+    border-bottom: 5px solid #f5a623;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .porto {
+    color: #f5a623;
+    padding: 60px 20px;
+    text-align: center;
+    background: linear-gradient(145deg, #0e0e0e, #1c1c1c);
+    border-bottom: 5px solid #f5a623;
+    border-radius: 0 0 50px 50px;
+  }
+
+  h2 {
+      font-size: 2.5rem;
+      text-transform: uppercase;
+      color: #f5a623;
+      letter-spacing: 5px;
+      margin-bottom: 20px;
+  }
+
+  .porto p {
+      font-size: 1.2rem;
+      font-weight: 300;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      color: #d1d1d1;
+      line-height: 1.6;
+  }
+
+  .flex-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      height: calc(100vh - 100px);
+  }
+
+  .content-container {
+      margin-inline: auto;
+      width: 95vw;
+  }
+
+  .vertical-scroll-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    padding: 50px 20px;
+    width: 100%;
+    height: calc(100vh - 60px); /* Учитываем высоту заголовка */
+    overflow-y: scroll;
+    scrollbar-color: #333 #f5a623;
+    scroll-snap-type: y mandatory;
+    background: rgba(255, 165, 0, 0.05);
+    border: 3px solid #f5a623;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  }
+
+  .vertical-scroll-container img {
+    scroll-snap-align: center;
+    width: 70%; /* Изображение будет занимать 70% ширины */
+    max-width: 800px; /* Ограничение для больших экранов */
+    border-radius: 15px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .vertical-scroll-container img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 3px solid #f5a623;
+  }
+
+  @media screen and (max-width: 40em) {
+    .vertical-scroll-container img {
+      width: 90%; /* Увеличиваем изображение на маленьких экранах */
+    }
+  }
+</style>
+<body>
+    <div class="header">
+        Рекомендации
+    </div>
+    <script></script>
+
+    <section class="porto">
+        <div class="content-container flex-wrapper">
+          <div class="vertical-scroll-container">
+            <img src="./кросоовки для рекомендации/adidas-man-shoes- (3).png" alt="самые новые колекциии">
+            <img src="./кросоовки для рекомендации/addidas-shoes- (1).png" alt="sardinas sin piel">
+            <img src="./кросоовки для рекомендации/addidas-shoes-.png" alt="sardinas en agua">
+            <img src="./кросоовки для рекомендации/nb-shoes-woman (1).png" alt="sardinas al limon">
+            <img src="./кросоовки для рекомендации/nb-shoes-woman.png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/new-balance-shoes- (1).png" alt="sardinas sin piel">
+            <img src="./кросоовки для рекомендации/new-balance-shoes-.png" alt="sardinas en agua">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (1).png" alt="sardinas al limon">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (10).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/adidas-man-shoes- (3).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (10).png" alt="sardinas sin piel">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (11).png" alt="sardinas en agua">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (12).png" alt="sardinas al limon">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (13).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (14).png" alt="sardinas sin piel">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (15).png" alt="sardinas en agua">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (2).png" alt="sardinas al limon">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (3).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (4).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (5).png" alt="sardinas sin piel">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (6).png" alt="sardinas en agua">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (7).png" alt="sardinas al limon">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (8).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-air-shoes- (9).png" alt="sardinas sin piel">
+            <img src="./кросоовки для рекомендации/nike-air-shoes-.png" alt="sardinas en agua">
+            <img src="./кросоовки для рекомендации/nike-man-shoes- (1).png" alt="sardinas al limon">
+            <img src="./кросоовки для рекомендации/nike-man-shoes-.png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-man-shoes-2070 (1).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-man-shoes-2070.png" alt="sardinas sin piel">
+            <img src="./кросоовки для рекомендации/nike-shoes- (1).png" alt="sardinas en agua">
+            <img src="./кросоовки для рекомендации/nike-shoes-.png" alt="sardinas al limon">
+            <img src="./кросоовки для рекомендации/nike-shoes-woman (1).png" alt="sardinas bajo en sodio">
+            <img src="./кросоовки для рекомендации/nike-shoes-woman.png" alt="sardinas sin piel">
+            
+          </div>
+          </div>
+        </div>
+     
+    </section>
+    <script></script>
+</body>
+</html>
