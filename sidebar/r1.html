@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>cine</title>
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --dark: #111;
+            --white: #f1f1f1;
+            --accent: #ff4d4d;
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            background: var(--dark);
+            border: 1px solid var(--white);
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+            color: var(--white);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .btn:hover {
+            color: var(--black);
+            border-color: var(--accent);
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn.active {
+            background: var(--accent);
+            color: var(--black);
+            border-color: var(--accent);
+        }
+
+        .filters {
+            display: flex;
+            gap: 16px;
+            margin: 32px 0;
+            align-items: center;
+        }
+
+        select {
+            padding: 12px 24px;
+            border: 1px solid var(--white);
+            background: var(--dark);
+            color: var(--white);
+            appearance: none;
+            font-size: 16px;
+            min-width: 240px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            transition: var(--transition);
+        }
+
+        select:hover {
+            border-color: var(--accent);
+        }
+
+        .film-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 32px;
+            position: relative;
+        }
+
+        .film-card {
+            background: var(--dark);
+            padding: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardAppear 0.6s ease forwards;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .film-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.8s;
+        }
+
+        .film-card:hover::before {
+            left: 100%;
+        }
+
+        .film-poster {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: var(--transition);
+        }
+
+        .film-rank {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--accent);
+            color: var(--black);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 3px;
+            box-shadow: 0 4px 16px rgba(255,77,77,0.3);
+            display: flex;
+            gap: 8px;
+        }
+
+        .category-rank {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            font-size: 12px;
+            background: rgba(0,0,0,0.8);
+            padding: 6px 12px;
+            border-radius: 3px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .film-info {
+            padding: 24px;
+        }
+
+        .film-info h3 {
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .film-info p {
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .film-info .director {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .film-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px;
+            }
+            
+            .film-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <button class="btn active" data-limit="10">ТОП 10</button>
+            <button class="btn" data-limit="50">ТОП 50</button>
+            <button class="btn" data-limit="100">ТОП 100</button>
+            <button class="btn" data-limit="500">ВЕСЬ РЕЙТИНГ</button>
+        </div>
+
+        <div class="filters">
+            <select id="sort">
+                <option value="desc">▼ НИЗКИЙ РЕЙТИНГ</option>
+                <option value="asc">▲ ВЫСОКИЙ РЕЙТИНГ</option>
+            </select>
+           
+            <select id="category">
+                <option value="all">ВСЕ КАТЕГОРИИ</option>
+                <option value="deep">ФИЛОСОФСКОЕ КИНО</option>
+                <option value="comedy">КОМЕДИИ</option>
+                <option value="horror">ХОРРОР</option>
+                <option value="series">СЕРИАЛЫ</option>
+            </select>
+        </div>
+
+        <div class="film-grid"></div>
+    </div>
+
+<script>
+const movies = [
+    {
+        id: 1,
+        title: "Зеленая миля",
+        year: 1999,
+        rating: 9.9,
+        director: "Фрэнк Дарабонт",
+        category: "deep",
+        genre: "Драма",
+        description: "История тюремного надзирателя и необычного заключенного с паранормальными способностями.",
+        poster: "https://static.wikia.nocookie.net/stephenking/images/9/9f/Green_Mile_film.jpg/revision/latest?cb=20170922222005&path-prefix=ru",
+        globalRank: 1,
+        categoryRank: 1
+    },
+    {
+        id: 2,
+        title: "Интерстеллар",
+        year: 2014,
+        rating: 9.8,
+        director: "Кристофер Нолан",
+        category: "deep",
+        genre: "Фантастика",
+        description: "Путешествие через пространственно-временной туннель для спасения человечества.",
+        poster: "https://b1.filmpro.ru/c/258954.jpg",
+        globalRank: 2,
+        categoryRank: 2
+    },
+    {
+        id: 3,
+        title: "Бойцовский клуб",
+        year: 1999,
+        rating: 9.7,
+        director: "Дэвид Финчер",
+        category: "deep",
+        genre: "Драма",
+        description: "Подпольный бойцовский клуб как способ бегства от реальности.",
+        poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmLYShBbUWO89IRx3RM7ImIO_sP4gLCHjn7A&s",
+        globalRank: 3,
+        categoryRank: 3
+    },
+    {
+        id: 4,
+        title: "Форрест Гамп",
+        year: 1994,
+        rating: 9.6,
+        director: "Роберт Земекис",
+        category: "deep",
+        genre: "Драма",
+        description: "Жизненный путь добродушного человека через ключевые события Америки.",
+        poster: "https://cs15.pikabu.ru/post_img/big/2024/06/23/8/1719148313290767774.png",
+        globalRank: 4,
+        categoryRank: 4
+    },
+    {
+        id: 5,
+        title: "Семь",
+        year: 1995,
+        rating: 9.5,
+        director: "Дэвид Финчер",
+        category: "deep",
+        genre: "Триллер",
+        description: "Детектив охотится за серийным убийцей, использующим семь смертных грехов.",
+        poster: "https://lh5.googleusercontent.com/proxy/Wf1mx5IP46xSE3m6tclcuxiNBiWV7ChJ2NjO1KyOcDxbg98mh2jz4tBkmrJKFCkiyA1uVWH3Uwu7Jd_lWICSu1XAk8d_Qui5Pikm8I1g4wBLtxaeKF3EKibj8IXrah5WQ0aCloHq5-yCfK4n_MfVkCCSDses",
+        globalRank: 5,
+        categoryRank: 5
+    },
+    {
+        id: 6,
+        title: "1+1",
+        year: 2011,
+        rating: 9.4,
+        director: "Оливье Накаш",
+        category: "comedy",
+        genre: "Драма",
+        description: "Невероятная дружба парализованного аристократа и бывшего заключенного.",
+        poster: "https://cdn.ananasposter.ru/image/cache/catalog/poster/pos23/4/61219-290x290.jpg",
+        globalRank: 6,
+        categoryRank: 1
+    },
+    {
+        id: 7,
+        title: "Зеленая книга",
+        year: 2018,
+        rating: 9.3,
+        director: "Питер Фаррелли",
+        category: "deep",
+        genre: "Биография",
+        description: "Путешествие афроамериканского музыканта по югу США 1960-х.",
+        poster: "https://media.kg-portal.ru/movies/g/greenbook/posters/greenbook_4.jpg",
+        globalRank: 7,
+        categoryRank: 6
+    },
+    {
+        id: 8,
+        title: "Леон",
+        year: 1994,
+        rating: 9.2,
+        director: "Люк Бессон",
+        category: "deep",
+        genre: "Боевик",
+        description: "Профессиональный убийца берет под опеку девочку-сироту.",
+        poster: "https://ir.ozone.ru/s3/multimedia-k/c1000/6751673300.jpg",
+        globalRank: 8,
+        categoryRank: 7
+    },
+    {
+        id: 9,
+        title: "Достучаться до небес",
+        year: 1997,
+        rating: 9.1,
+        director: "Томас Ян",
+        category: "comedy",
+        genre: "Драма",
+        description: "Двое смертельно больных мужчин отправляются в последнее путешествие.",
+        poster: "https://avatars.mds.yandex.net/get-kinopoisk-image/4774061/3fb781cd-2b98-4072-b102-311661121a2e/220x330",
+        globalRank: 9,
+        categoryRank: 2
+    },
+    {
+        id: 10,
+        title: "Побег из Шоушенка",
+        year: 1994,
+        rating: 9.0,
+        director: "Фрэнк Дарабонт",
+        category: "deep",
+        genre: "Драма",
+        description: "Невинно осужденный банкир планирует побег из тюрьмы.",
+        poster: "https://poster4.me/wp-content/uploads/2020/05/770bf9d7-04f3-467d-a711-c4bf4a773c8d.jpeg",
+        globalRank: 10,
+        categoryRank: 8
+    }
+];
+
+// Рассчет категорийных рейтингов
+const categories = [...new Set(movies.map(m => m.category))];
+categories.forEach(category => {
+    const categoryMovies = movies.filter(m => m.category === category)
+                                .sort((a, b) => b.rating - a.rating);
+    categoryMovies.forEach((movie, index) => {
+        movie.categoryRank = index + 1;
+    });
+});
+
+const State = {
+    get: () => JSON.parse(localStorage.getItem('filmState')) || {
+        limit: 10,
+        sort: 'desc',
+        category: 'all'
+    },
+    set: (state) => localStorage.setItem('filmState', JSON.stringify(state))
+};
+
+let currentState = State.get();
+
+function renderFilms() {
+    const grid = document.querySelector('.film-grid');
+    grid.style.opacity = '0.5';
+    grid.style.transition = 'opacity 0.3s ease';
+
+    requestAnimationFrame(() => {
+        let filtered = [...movies];
+        
+        if(currentState.category !== 'all') {
+            filtered = filtered.filter(f => f.category === currentState.category);
+        }
+
+        filtered.sort((a, b) => currentState.sort === 'desc' ? b.globalRank - a.globalRank : a.globalRank - b.globalRank);
+        const limited = filtered.slice(0, currentState.limit);
+
+        grid.innerHTML = limited.map((film, index) => `
+            <div class="film-card" style="animation-delay: ${index * 0.05}s">
+                <div class="film-rank">
+                    <span>#${film.globalRank}</span>
+                    <span>${film.rating.toFixed(1)}</span>
+                </div>
+                <img src="${film.poster}" class="film-poster" alt="${film.title}">
+                <div class="film-info">
+                    <h3>${film.title} (${film.year})</h3>
+                    <p class="director">${film.director}</p>
+                    <p>${film.description}</p>
+                </div>
+                <div class="category-rank">
+                    <span>${film.category.toUpperCase()}</span>
+                    <span>#${film.categoryRank}</span>
+                </div>
+            </div>
+        `).join('');
+
+        grid.style.opacity = '1';
+    });
+}
+
+function initState() {
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.limit) === currentState.limit);
+    });
+    
+    document.getElementById('sort').value = currentState.sort;
+    document.getElementById('category').value = currentState.category;
+}
+
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentState.limit = parseInt(btn.dataset.limit);
+        State.set(currentState);
+        renderFilms();
+    });
+});
+
+document.getElementById('sort').addEventListener('change', (e) => {
+    currentState.sort = e.target.value;
+    State.set(currentState);
+    renderFilms();
+});
+
+document.getElementById('category').addEventListener('change', (e) => {
+    currentState.category = e.target.value;
+    State.set(currentState);
+    renderFilms();
+});
+
+initState();
+renderFilms();
+
+window.addEventListener('beforeunload', () => State.set(currentState));
+</script>
+</body>
+</html>
