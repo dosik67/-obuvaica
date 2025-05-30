@@ -1,0 +1,152 @@
+<?php
+session_start();
+if(!isset($_SESSION["username"])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRM-система</title>
+    <link rel="icon" href="../assets/images/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+        .ss {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 25px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .column {
+            float: left;
+            left: 5%;
+            position: absolute;
+            width: 40%;
+            padding: 0 10px;
+            color: white;
+        }
+        .row {margin: 0 -5px;}
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+            background-color: #65B1F7;
+            border-radius: 40px;
+            font-size: 22px;
+        }
+        .column2 {
+            float: left;
+            left: 50%;
+            position: absolute;
+            width: 45%;
+            padding: 0 10px;
+            color: white;
+        }
+        .card2 {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            background-color: #65B1F7;
+            border-radius: 40px;
+            font-size: 16px;
+        }
+        input {
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">                
+    <center><h2 style="font-size:33px; color:#333; font-weight:bold; top:20px;">Клиенты</h2></center>
+    <div class="row">
+        <div class="column"> 
+            <div class="card">
+                <form action="connection_dbsql.php" method="POST">
+                    <table>
+                        <tr>
+                            <td>Клиент:</td>
+                            <td><input type="text" name="name" required></td>
+                        </tr>
+                        <tr>
+                            <td>Номер телефона:</td>
+                            <td><input type="text" name="age" required></td>
+                        </tr>
+                        <tr>
+                            <td>Сумма:</td>
+                            <td><input type="text" name="address" required></td>
+                        </tr>
+                        <tr>
+                            <td>Адрес:</td>
+                            <td><input type="text" name="salary" required></td>
+                        </tr>
+                        <tr>
+                            <td>Дополнительно:</td>
+                            <td><input type="text" name="more" required></td>
+                        </tr>
+                    </table>
+                    <br>
+                    <input class="ss" type="submit" value="Добавить" name="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row2">
+        <div class="column2">
+            <div class="card2">
+                <?php
+                $strconn = mysqli_connect("localhost", "root", "", "crm_db");
+                if(!$strconn) {
+                    echo "Connection failed: " . mysqli_connect_error();
+                }
+                ?>
+                <h3>Последние клиенты</h3>
+                <table>
+                    <tr>
+                        <th>Клиент</th>
+                        <th>Дата</th>
+                    </tr>
+                    <?php
+                    $query = "SELECT name, date FROM db_sql ORDER BY date DESC LIMIT 5";
+                    $result = mysqli_query($strconn, $query);
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo '<tr>';
+                        echo '<td>' . htmlspecialchars($row['name']) . '</td>';
+                        echo '<td>' . htmlspecialchars($row['date']) . '</td>';
+                        echo '</tr>';
+                    }
+                    ?>  
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
